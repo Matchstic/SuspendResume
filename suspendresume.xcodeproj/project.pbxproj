@@ -1,0 +1,364 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C945A9A816F870EA00A9A0B8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C945A9A716F870EA00A9A0B8 /* Foundation.framework */; };
+		C945A9B916F870EA00A9A0B8 /* suspendresume.mm in Sources */ = {isa = PBXBuildFile; fileRef = C945A9B816F870EA00A9A0B8 /* suspendresume.mm */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		C945A9A416F870EA00A9A0B8 /* suspendresume.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = suspendresume.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		C945A9A716F870EA00A9A0B8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		C945A9AC16F870EA00A9A0B8 /* control.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = control.txt; path = Package/DEBIAN/control.txt; sourceTree = "<group>"; };
+		C945A9AD16F870EA00A9A0B8 /* control */ = {isa = PBXFileReference; lastKnownFileType = text; name = control; path = Package/DEBIAN/control; sourceTree = "<group>"; };
+		C945A9AF16F870EA00A9A0B8 /* PackageVersion.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = PackageVersion.plist; sourceTree = "<group>"; };
+		C945A9B316F870EA00A9A0B8 /* suspendresume.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = suspendresume.plist; path = Package/Library/PreferenceLoader/Preferences/suspendresume.plist; sourceTree = "<group>"; };
+		C945A9B416F870EA00A9A0B8 /* suspendresumeIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = suspendresumeIcon.png; path = Package/Library/PreferenceLoader/Preferences/suspendresumeIcon.png; sourceTree = "<group>"; };
+		C945A9B516F870EA00A9A0B8 /* suspendresumeIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "suspendresumeIcon@2x.png"; path = "Package/Library/PreferenceLoader/Preferences/suspendresumeIcon@2x.png"; sourceTree = "<group>"; };
+		C945A9B616F870EA00A9A0B8 /* suspendresume-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "suspendresume-Prefix.pch"; sourceTree = "<group>"; };
+		C945A9B716F870EA00A9A0B8 /* suspendresume.xm */ = {isa = PBXFileReference; lastKnownFileType = text; path = suspendresume.xm; sourceTree = "<group>"; };
+		C945A9B816F870EA00A9A0B8 /* suspendresume.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = suspendresume.mm; sourceTree = "<group>"; };
+		C945A9BC16F870EA00A9A0B8 /* suspendresume.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = suspendresume.plist; path = Package/Library/MobileSubstrate/DynamicLibraries/suspendresume.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C945A9A016F870EA00A9A0B8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C945A9A816F870EA00A9A0B8 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		C945A99916F870EA00A9A0B8 = {
+			isa = PBXGroup;
+			children = (
+				C945A9A916F870EA00A9A0B8 /* suspendresume */,
+				C945A9A616F870EA00A9A0B8 /* Frameworks */,
+				C945A9A516F870EA00A9A0B8 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		C945A9A516F870EA00A9A0B8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C945A9A416F870EA00A9A0B8 /* suspendresume.dylib */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C945A9A616F870EA00A9A0B8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C945A9A716F870EA00A9A0B8 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C945A9A916F870EA00A9A0B8 /* suspendresume */ = {
+			isa = PBXGroup;
+			children = (
+				C945A9B716F870EA00A9A0B8 /* suspendresume.xm */,
+				C945A9B816F870EA00A9A0B8 /* suspendresume.mm */,
+				C945A9AA16F870EA00A9A0B8 /* Package */,
+				C945A9AE16F870EA00A9A0B8 /* Supporting Files */,
+			);
+			path = suspendresume;
+			sourceTree = "<group>";
+		};
+		C945A9AA16F870EA00A9A0B8 /* Package */ = {
+			isa = PBXGroup;
+			children = (
+				C945A9AB16F870EA00A9A0B8 /* DEBIAN */,
+				C945A9B016F870EA00A9A0B8 /* Library */,
+			);
+			name = Package;
+			sourceTree = "<group>";
+		};
+		C945A9AB16F870EA00A9A0B8 /* DEBIAN */ = {
+			isa = PBXGroup;
+			children = (
+				C945A9AC16F870EA00A9A0B8 /* control.txt */,
+				C945A9AD16F870EA00A9A0B8 /* control */,
+			);
+			name = DEBIAN;
+			sourceTree = "<group>";
+		};
+		C945A9AE16F870EA00A9A0B8 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C945A9AF16F870EA00A9A0B8 /* PackageVersion.plist */,
+				C945A9B616F870EA00A9A0B8 /* suspendresume-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C945A9B016F870EA00A9A0B8 /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				C945A9B116F870EA00A9A0B8 /* PreferenceLoader */,
+				C945A9BA16F870EA00A9A0B8 /* MobileSubstrate */,
+			);
+			name = Library;
+			sourceTree = "<group>";
+		};
+		C945A9B116F870EA00A9A0B8 /* PreferenceLoader */ = {
+			isa = PBXGroup;
+			children = (
+				C945A9B216F870EA00A9A0B8 /* Preferences */,
+			);
+			name = PreferenceLoader;
+			sourceTree = "<group>";
+		};
+		C945A9B216F870EA00A9A0B8 /* Preferences */ = {
+			isa = PBXGroup;
+			children = (
+				C945A9B316F870EA00A9A0B8 /* suspendresume.plist */,
+				C945A9B416F870EA00A9A0B8 /* suspendresumeIcon.png */,
+				C945A9B516F870EA00A9A0B8 /* suspendresumeIcon@2x.png */,
+			);
+			name = Preferences;
+			sourceTree = "<group>";
+		};
+		C945A9BA16F870EA00A9A0B8 /* MobileSubstrate */ = {
+			isa = PBXGroup;
+			children = (
+				C945A9BB16F870EA00A9A0B8 /* DynamicLibraries */,
+			);
+			name = MobileSubstrate;
+			sourceTree = "<group>";
+		};
+		C945A9BB16F870EA00A9A0B8 /* DynamicLibraries */ = {
+			isa = PBXGroup;
+			children = (
+				C945A9BC16F870EA00A9A0B8 /* suspendresume.plist */,
+			);
+			name = DynamicLibraries;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		C945A9A116F870EA00A9A0B8 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		C945A9A316F870EA00A9A0B8 /* suspendresume */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C945A9BF16F870EA00A9A0B8 /* Build configuration list for PBXNativeTarget "suspendresume" */;
+			buildPhases = (
+				C945A99E16F870EA00A9A0B8 /* ShellScript */,
+				C945A99F16F870EA00A9A0B8 /* Sources */,
+				C945A9A016F870EA00A9A0B8 /* Frameworks */,
+				C945A9A116F870EA00A9A0B8 /* Headers */,
+				C945A9A216F870EA00A9A0B8 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = suspendresume;
+			productName = suspendresume;
+			productReference = C945A9A416F870EA00A9A0B8 /* suspendresume.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C945A99A16F870EA00A9A0B8 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+			};
+			buildConfigurationList = C945A99D16F870EA00A9A0B8 /* Build configuration list for PBXProject "suspendresume" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = C945A99916F870EA00A9A0B8;
+			productRefGroup = C945A9A516F870EA00A9A0B8 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C945A9A316F870EA00A9A0B8 /* suspendresume */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		C945A99E16F870EA00A9A0B8 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/opt/iOSOpenDev/bin/iosod --xcbp-logos";
+		};
+		C945A9A216F870EA00A9A0B8 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/opt/iOSOpenDev/bin/iosod --xcbp";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C945A99F16F870EA00A9A0B8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C945A9B916F870EA00A9A0B8 /* suspendresume.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		C945A9BD16F870EA00A9A0B8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				EXCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES = "*.nib *.lproj *.gch (*) .DS_Store CVS .svn .git .hg *.xcodeproj *.xcode *.pbproj *.pbxproj";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(iOSOpenDevPath)/frameworks/**",
+					"$(SDKROOT)/System/Library/PrivateFrameworks",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(iOSOpenDevPath)/include/**";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				LIBRARY_SEARCH_PATHS = "$(iOSOpenDevPath)/lib/**";
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = NO;
+				iOSOpenDevPath = /opt/iOSOpenDev;
+			};
+			name = Debug;
+		};
+		C945A9BE16F870EA00A9A0B8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = YES;
+				EXCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES = "*.nib *.lproj *.gch (*) .DS_Store CVS .svn .git .hg *.xcodeproj *.xcode *.pbproj *.pbxproj";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(iOSOpenDevPath)/frameworks/**",
+					"$(SDKROOT)/System/Library/PrivateFrameworks",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(iOSOpenDevPath)/include/**";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				LIBRARY_SEARCH_PATHS = "$(iOSOpenDevPath)/lib/**";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				iOSOpenDevPath = /opt/iOSOpenDev;
+			};
+			name = Release;
+		};
+		C945A9C016F870EA00A9A0B8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "suspendresume/suspendresume-Prefix.pch";
+				INSTALL_PATH = /Library/MobileSubstrate/DynamicLibraries;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				iOSOpenDevBuildPackageOnAnyBuild = NO;
+				iOSOpenDevCopyOnBuild = NO;
+				iOSOpenDevDevice = "";
+				iOSOpenDevInstallOnAnyBuild = NO;
+				iOSOpenDevInstallOnProfiling = YES;
+				iOSOpenDevRespringOnInstall = YES;
+				iOSOpenDevUsePackageVersionPList = YES;
+			};
+			name = Debug;
+		};
+		C945A9C116F870EA00A9A0B8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "suspendresume/suspendresume-Prefix.pch";
+				INSTALL_PATH = /Library/MobileSubstrate/DynamicLibraries;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				iOSOpenDevBuildPackageOnAnyBuild = NO;
+				iOSOpenDevCopyOnBuild = NO;
+				iOSOpenDevDevice = "";
+				iOSOpenDevInstallOnAnyBuild = NO;
+				iOSOpenDevInstallOnProfiling = YES;
+				iOSOpenDevRespringOnInstall = YES;
+				iOSOpenDevUsePackageVersionPList = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C945A99D16F870EA00A9A0B8 /* Build configuration list for PBXProject "suspendresume" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C945A9BD16F870EA00A9A0B8 /* Debug */,
+				C945A9BE16F870EA00A9A0B8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C945A9BF16F870EA00A9A0B8 /* Build configuration list for PBXNativeTarget "suspendresume" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C945A9C016F870EA00A9A0B8 /* Debug */,
+				C945A9C116F870EA00A9A0B8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C945A99A16F870EA00A9A0B8 /* Project object */;
+}

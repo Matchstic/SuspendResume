@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'suspendresume' target in the 'suspendresume' project
+//
+
+#ifdef __OBJC__
+    #import <Foundation/Foundation.h>
+#endif
