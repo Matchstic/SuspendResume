@@ -19,6 +19,8 @@ Anything with a proximity sensor! So, all models of the iPhone, '2G' through to 
 - After a reboot or respring, the lockscreen accepts proximity events, and locks itself, sometimes casuing a respring
 - Formatting for the PSSliderCell is a bit out
 
+Email me at mclarke0805@gmail.com if you find any more
+
 **TODO**
 - Fix bugs!
 - Add a menu under preferences where apps can be blacklisted from being locked
