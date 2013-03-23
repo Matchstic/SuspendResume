@@ -13,12 +13,6 @@
 	<array>
 		<dict>
 			<key>cell</key>
-			<string>PSGroupCell</string>
-			<key>footerText</key>
-			<string>This tweak simply locks your device when you put it in your pocket. Fancy, eh?</string>
-		</dict>
-		<dict>
-			<key>cell</key>
 			<string>PSSwitchCell</string>
 			<key>default</key>
 			<true/>
@@ -28,6 +22,38 @@
 			<string>enabled</string>
 			<key>label</key>
 			<string>Enabled</string>
+		</dict>
+		<dict>
+			<key>footerText</key>
+			<string>Use this slider to change how long it takes to lock the device after something is near it. If you want to lock it with a wave, leave it at 0.5 or less.</string>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>Time Interval</string>
+		</dict>
+		<dict>
+			<key>label</key>
+			<string>Time Interval</string>
+			<key>key</key>
+			<string>interval</string>
+			<key>showValue</key>
+			<true/>
+			<key>max</key>
+			<real>2</real>
+			<key>min</key>
+			<real>0.1</real>
+			<key>defaults</key>
+			<string>com.matchstick.suspendresume</string>
+			<key>default</key>
+			<real>0.5</real>
+			<key>cell</key>
+			<string>PSSliderCell</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>footerText</key>
+			<string>This tweak was originally made to simply lock your device when you put it in your pocket. But, you can also use it to emualte a smart cover for the iPhone or iPod Touch, lock tyour device with a wave of your hand, and much more! Fancy, eh?</string>
 		</dict>
 	</array>
 	<key>title</key>

@@ -1,6 +1,6 @@
 Package: com.matchstick.suspendresume
 Name: SuspendResume
-Version: 0.1-1
+Version: 0.2-1
 Description: 
 Section: System
 Depends: firmware (>= 5.0), mobilesubstrate

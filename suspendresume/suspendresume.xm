@@ -45,14 +45,27 @@ static NSString *settingsFile = @"/var/mobile/Library/Preferences/com.matchstick
     NSDictionary *dict = [[NSDictionary alloc] initWithContentsOfFile:settingsFile];
     tweakOn = [[dict objectForKey:@"enabled"] boolValue];
     
+    // Check for time interval - the value is stored in <real> tags
+    double timeInterval = [[dict objectForKey:@"interval"] doubleValue];
+    
     // Only run if tweak is on
     if (tweakOn) {
 
         // Get first proximity value
         if ([[UIDevice currentDevice] proximityState] == YES) {
 
-            // Wait a few seconds TODO allow changing of wait interval from prefrences FIXME causes a lockup of interface whilst sleeping
-            [self performSelector:@selector(lockDeviceAfterDelay) withObject:nil afterDelay:1.0];
+            // Wait a few seconds FIXME causes a lockup of interface whilst waiting
+            [self performSelector:@selector(lockDeviceAfterDelay) withObject:nil afterDelay:timeInterval];
+        }
+    }
+    
+    // Turn off proximity monitoring if tweak isn't enabled
+    else {
+        // Check if proximity monitoring is enabled
+        BOOL proximityOn = [[UIDevice currentDevice] isProximityMonitoringEnabled];
+        
+        if (proximityOn) {
+            [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
         }
     }
 }
@@ -71,84 +84,84 @@ static NSString *settingsFile = @"/var/mobile/Library/Preferences/com.matchstick
 
 %end
 
-%group DelegateHooks
-%hook UIApplicationDelegate
+//%group DelegateHooks
+//%hook UIApplicationDelegate
 
--(void)applicationDidFinishLaunching:(id)application {
-    %orig;
-    %log;
+//-(void)applicationDidFinishLaunching:(id)application {
+//    %orig;
+//    %log;
     
     // Set up proximity monitoring
-    [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
-    [[UIDevice currentDevice] proximityState];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(proximityChange:) name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
-}
+//    [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
+//    [[UIDevice currentDevice] proximityState];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(proximityChange:) name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
+//}
 
-%new
+//%new
 
--(void)proximityChange:(NSNotification*)notification {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Testing"
-                                                    message:@"Proximity changed"
-                                                   delegate:nil
-                                          cancelButtonTitle:@"Thanks"
-                                          otherButtonTitles:nil];
-    [alert show];
-}
+//-(void)proximityChange:(NSNotification*)notification {
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Testing"
+//                                                    message:@"Proximity changed"
+//                                                   delegate:nil
+//                                          cancelButtonTitle:@"Thanks"
+//                                          otherButtonTitles:nil];
+//    [alert show];
+//}
 
-%end
-%end
+//%end
+//%end
 
-%hook UIApplication
+//%hook UIApplication
 
 // From iPhone-backgrounder
--(void)_loadMainNibFile {
-    %orig;
+//-(void)_loadMainNibFile {
+//    %orig;
     // Delegate if it exists, UIApplication subclass if not.
-    Class delegateClass = [[self delegate] class] ?: [self class];
-    %init(DelegateHooks, UIApplicationDelegate = delegateClass);
+//    Class delegateClass = [[self delegate] class] ?: [self class];
+//    %init(DelegateHooks, UIApplicationDelegate = delegateClass);
     
     // Run proximity method
-    [self performSelector:@selector(proximityChange:)];
-}
+//    [self performSelector:@selector(proximityChange:)];
+//}
 
-%new
+//%new
 
 // Add new code into application
--(void)proximityChange:(NSNotification*)notification {
-    %log;
-    [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
+//-(void)proximityChange:(NSNotification*)notification {
+//    %log;
+//    [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
     
     // Check if tweak is on
-    NSDictionary *dict = [[NSDictionary alloc] initWithContentsOfFile:settingsFile];
-    tweakOn = [[dict objectForKey:@"enabled"] boolValue];
+//    NSDictionary *dict = [[NSDictionary alloc] initWithContentsOfFile:settingsFile];
+//    tweakOn = [[dict objectForKey:@"enabled"] boolValue];
     
     // Only run if tweak is on
-    if (tweakOn) {
+//    if (tweakOn) {
         
         // Get first proximity value
-        if ([[UIDevice currentDevice] proximityState] == YES) {
+//        if ([[UIDevice currentDevice] proximityState] == YES) {
             
             // Wait a few seconds TODO allow changing of wait interval from prefrences FIXME causes a lockup of interface whilst sleeping
-            [self performSelector:@selector(lockDeviceAfterDelay) withObject:nil afterDelay:1.0];
-        }
-    }
-}
+//            [self performSelector:@selector(lockDeviceAfterDelay) withObject:nil afterDelay:0.5];
+//        }
+//    }
+//}
 
-%new
+//%new
 
--(void)lockDeviceAfterDelay {
+//-(void)lockDeviceAfterDelay {
     
     // Second proximity value
-    if ([[UIDevice currentDevice] proximityState] == YES) {
+//    if ([[UIDevice currentDevice] proximityState] == YES) {
         
         // Lock device
-        GSEventLockDevice();
-    }
-}
+//        GSEventLockDevice();
+//    }
+//}
 
 
-%end
+//%end
 
-static __attribute__((constructor)) void localInit() {
-    %init;
-}
+//static __attribute__((constructor)) void localInit() {
+//    %init;
+//}
