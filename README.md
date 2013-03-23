@@ -17,6 +17,7 @@ Anything with a proximity sensor! So, all models of the iPhone, '2G' through to 
 - Occaisonally, proximity monitoring is turned off, and a respring is required to re-enable it
 - Calls are dropped/hung up in MobilePhone.app, and also in third-party apps such as CallBar, since the device is locked
 - After a reboot or respring, the lockscreen accepts proximity events, and locks itself, sometimes casuing a respring
+- Formatting for the PSSliderCell is a bit out
 
 **TODO**
 - Fix bugs!
