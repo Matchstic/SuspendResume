@@ -4,10 +4,12 @@
 <dict>
 	<key>entry</key>
 	<dict>
+		<key>icon</key>
+		<string>Smartvibrate.png</string>
 		<key>cell</key>
 		<string>PSLinkCell</string>
 		<key>label</key>
-		<string>SuspendResume</string>
+		<string>SmartVibrate</string>
 	</dict>
 	<key>items</key>
 	<array>
@@ -15,7 +17,7 @@
 			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>footerText</key>
-			<string>This tweak simply locks your device when you put it in your pocket. Fancy, eh?</string>
+			<string>This tweak simply turns on vibrate when the iPhone is in your pocket, using the proximity sensor.</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -23,7 +25,7 @@
 			<key>default</key>
 			<true/>
 			<key>defaults</key>
-			<string>com.matchstick.suspendresume</string>
+			<string>com.matchstick.smartvibrate</string>
 			<key>key</key>
 			<string>enabled</string>
 			<key>label</key>
@@ -31,6 +33,6 @@
 		</dict>
 	</array>
 	<key>title</key>
-	<string>SuspendResume</string>
+	<string>SmartVibrate</string>
 </dict>
 </plist>

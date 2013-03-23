@@ -1,39 +1,154 @@
-
 // Logos by Dustin Howett
 // See http://iphonedevwiki.net/index.php/Logos
+// SuspendResume by Matt Clarke (matchstick, matchstick-dev on Github and some other places)
 
-#error iOSOpenDev post-project creation from template requirements (remove these lines after completed) -- \
-	Link to libsubstrate.dylib: \
-	(1) go to TARGETS > Build Phases > Link Binary With Libraries and add /opt/iOSOpenDev/lib/libsubstrate.dylib \
-	(2) remove these lines from *.xm files (not *.mm files as they're automatically generated from *.xm files)
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+#import <SpringBoard/SpringBoard.h>
+#import <SpringBoard/UIApplicationDelegate.h>
+#import <GraphicsServices/GSEvent.h>
+#include <notify.h>
 
-%hook ClassName
+@interface suspendresume : NSObject 
 
-+ (id)sharedInstance
-{
-	%log;
+@property(nonatomic, readonly) BOOL proximityState;
 
-	return %orig;
+@end
+
+@implementation suspendresume
+
+BOOL tweakOn;
+
+@end
+
+static NSString *settingsFile = @"/var/mobile/Library/Preferences/com.matchstick.suspendresume.plist";
+
+%hook SpringBoard
+
+-(void)applicationDidFinishLaunching:(id)application {
+    // Allow SpringBoard to initialise
+    %orig;
+
+    // Set up proximity monitoring
+    [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
+    [[UIDevice currentDevice] proximityState];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(proximityChange:) name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
 }
 
-- (void)messageWithNoReturnAndOneArgument:(id)originalArgument
-{
-	%log;
+%new
 
-	%orig(originalArgument);
-	
-	// or, for exmaple, you could use a custom value instead of the original argument: %orig(customValue);
+// Add new code into SpringBoard
+-(void)proximityChange:(NSNotification*)notification {
+    [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
+
+    // Check if tweak is on
+    NSDictionary *dict = [[NSDictionary alloc] initWithContentsOfFile:settingsFile];
+    tweakOn = [[dict objectForKey:@"enabled"] boolValue];
+    
+    // Only run if tweak is on
+    if (tweakOn) {
+
+        // Get first proximity value
+        if ([[UIDevice currentDevice] proximityState] == YES) {
+
+            // Wait a few seconds TODO allow changing of wait interval from prefrences FIXME causes a lockup of interface whilst sleeping
+            [self performSelector:@selector(lockDeviceAfterDelay) withObject:nil afterDelay:1.0];
+        }
+    }
 }
 
-- (id)messageWithReturnAndNoArguments
-{
-	%log;
+%new
 
-	id originalReturnOfMessage = %orig;
-	
-	// for example, you could modify the original return value before returning it: [SomeOtherClass doSomethingToThisObject:originalReturnOfMessage];
-
-	return originalReturnOfMessage;
+-(void)lockDeviceAfterDelay {
+    
+    // Second proximity value
+    if ([[UIDevice currentDevice] proximityState] == YES) {
+        
+        // Lock device
+        GSEventLockDevice();
+    }
 }
 
 %end
+
+%group DelegateHooks
+%hook UIApplicationDelegate
+
+-(void)applicationDidFinishLaunching:(id)application {
+    %orig;
+    %log;
+    
+    // Set up proximity monitoring
+    [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
+    [[UIDevice currentDevice] proximityState];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(proximityChange:) name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
+}
+
+%new
+
+-(void)proximityChange:(NSNotification*)notification {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Testing"
+                                                    message:@"Proximity changed"
+                                                   delegate:nil
+                                          cancelButtonTitle:@"Thanks"
+                                          otherButtonTitles:nil];
+    [alert show];
+}
+
+%end
+%end
+
+%hook UIApplication
+
+// From iPhone-backgrounder
+-(void)_loadMainNibFile {
+    %orig;
+    // Delegate if it exists, UIApplication subclass if not.
+    Class delegateClass = [[self delegate] class] ?: [self class];
+    %init(DelegateHooks, UIApplicationDelegate = delegateClass);
+    
+    // Run proximity method
+    [self performSelector:@selector(proximityChange:)];
+}
+
+%new
+
+// Add new code into application
+-(void)proximityChange:(NSNotification*)notification {
+    %log;
+    [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
+    
+    // Check if tweak is on
+    NSDictionary *dict = [[NSDictionary alloc] initWithContentsOfFile:settingsFile];
+    tweakOn = [[dict objectForKey:@"enabled"] boolValue];
+    
+    // Only run if tweak is on
+    if (tweakOn) {
+        
+        // Get first proximity value
+        if ([[UIDevice currentDevice] proximityState] == YES) {
+            
+            // Wait a few seconds TODO allow changing of wait interval from prefrences FIXME causes a lockup of interface whilst sleeping
+            [self performSelector:@selector(lockDeviceAfterDelay) withObject:nil afterDelay:1.0];
+        }
+    }
+}
+
+%new
+
+-(void)lockDeviceAfterDelay {
+    
+    // Second proximity value
+    if ([[UIDevice currentDevice] proximityState] == YES) {
+        
+        // Lock device
+        GSEventLockDevice();
+    }
+}
+
+
+%end
+
+static __attribute__((constructor)) void localInit() {
+    %init;
+}
