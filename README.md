@@ -22,6 +22,7 @@ Anything with a proximity sensor! So, all models of the iPhone, '2G' through to 
 **TODO**
 - Fix bugs!
 - Add a menu under preferences where apps can be blacklisted from being locked
+- Add setting to choose whether or not to lock in apps; helpful for people who don't have a passcode enabled
 - Other cool stuff!
 
 Hint: When using this to lock your iPhone with a hand gesture, don't forget to feel like a Jedi ;)
