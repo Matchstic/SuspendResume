@@ -53,7 +53,7 @@
 			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>footerText</key>
-			<string>This tweak was originally made to simply lock your device when you put it in your pocket. But, you can also use it to emualte a smart cover for the iPhone or iPod Touch, lock tyour device with a wave of your hand, and much more! Fancy, eh?</string>
+			<string>This tweak was originally made to simply lock your device when you put it in your pocket. But, you can also use it to emulate a smart cover for the iPhone, lock your device with a wave of your hand, and much more! Fancy, eh?</string>
 		</dict>
 	</array>
 	<key>title</key>
