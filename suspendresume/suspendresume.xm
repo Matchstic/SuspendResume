@@ -58,16 +58,6 @@ static NSString *settingsFile = @"/var/mobile/Library/Preferences/com.matchstick
             [self performSelector:@selector(lockDeviceAfterDelay) withObject:nil afterDelay:timeInterval];
         }
     }
-    
-    // Turn off proximity monitoring if tweak isn't enabled
-    else {
-        // Check if proximity monitoring is enabled
-        BOOL proximityOn = [[UIDevice currentDevice] isProximityMonitoringEnabled];
-        
-        if (proximityOn) {
-            [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
-        }
-    }
 }
 
 %new
