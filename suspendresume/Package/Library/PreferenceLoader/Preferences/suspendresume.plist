@@ -24,6 +24,18 @@
 			<string>Enabled</string>
 		</dict>
 		<dict>
+			<key>label</key>
+			<string>Lock in Camera.app</string>
+			<key>key</key>
+			<string>cameraLock</string>
+			<key>defaults</key>
+			<string>com.matchstick.suspendresume</string>
+			<key>default</key>
+			<true/>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+		</dict>
+		<dict>
 			<key>footerText</key>
 			<string>Use this slider to change how long it takes to lock the device after something is near it. If you want to lock it with a wave, leave it at 0.5 or less.</string>
 			<key>cell</key>

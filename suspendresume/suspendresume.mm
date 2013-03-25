@@ -6,172 +6,128 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import <SpringBoard/SpringBoard.h>
-#import <SpringBoard/UIApplicationDelegate.h>
+#import <SpringBoard/SBApplicationIcon.h>
+#import <SpringBoard/SBTelephonyManager.h>
 #import <GraphicsServices/GSEvent.h>
 #include <notify.h>
 
-@interface suspendresume : NSObject 
-
-@property(nonatomic, readonly) BOOL proximityState;
-
-@end
-
-@implementation suspendresume
-
-BOOL tweakOn;
-
-@end
-
 static NSString *settingsFile = @"/var/mobile/Library/Preferences/com.matchstick.suspendresume.plist";
+static BOOL tweakOn;
+static BOOL _clearIdleTimer;
 
 #include <logos/logos.h>
 #include <substrate.h>
-@class SpringBoard; 
-static void (*_logos_orig$_ungrouped$SpringBoard$applicationDidFinishLaunching$)(SpringBoard*, SEL, id); static void _logos_method$_ungrouped$SpringBoard$applicationDidFinishLaunching$(SpringBoard*, SEL, id); static void _logos_method$_ungrouped$SpringBoard$proximityChange$(SpringBoard*, SEL, NSNotification*); static void _logos_method$_ungrouped$SpringBoard$lockDeviceAfterDelay(SpringBoard*, SEL); 
+@class SBTelephonyManager; @class SpringBoard; 
+static void (*_logos_orig$_ungrouped$SpringBoard$_performDeferredLaunchWork)(SpringBoard*, SEL); static void _logos_method$_ungrouped$SpringBoard$_performDeferredLaunchWork(SpringBoard*, SEL); static void (*_logos_orig$_ungrouped$SpringBoard$setExpectsFaceContact$)(SpringBoard*, SEL, BOOL); static void _logos_method$_ungrouped$SpringBoard$setExpectsFaceContact$(SpringBoard*, SEL, BOOL); static void (*_logos_orig$_ungrouped$SpringBoard$_proximityChanged$)(SpringBoard*, SEL, NSNotification*); static void _logos_method$_ungrouped$SpringBoard$_proximityChanged$(SpringBoard*, SEL, NSNotification*); static void (*_logos_orig$_ungrouped$SpringBoard$clearIdleTimer)(SpringBoard*, SEL); static void _logos_method$_ungrouped$SpringBoard$clearIdleTimer(SpringBoard*, SEL); 
+static __inline__ __attribute__((always_inline)) Class _logos_static_class_lookup$SBTelephonyManager(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("SBTelephonyManager"); } return _klass; }
+#line 17 "/Users/Matt/iOS/Projects/suspendresume/suspendresume/suspendresume.xm"
 
-#line 26 "/Users/Matt/iOS/Projects/suspendresume/suspendresume/suspendresume.xm"
 
-
-static void _logos_method$_ungrouped$SpringBoard$applicationDidFinishLaunching$(SpringBoard* self, SEL _cmd, id application) {
+static void _logos_method$_ungrouped$SpringBoard$_performDeferredLaunchWork(SpringBoard* self, SEL _cmd) {
     
-    _logos_orig$_ungrouped$SpringBoard$applicationDidFinishLaunching$(self, _cmd, application);
-
+    _logos_orig$_ungrouped$SpringBoard$_performDeferredLaunchWork(self, _cmd);
     
-    [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
-    [[UIDevice currentDevice] proximityState];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(proximityChange:) name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
+    
+    NSDictionary *dict = [[NSDictionary alloc] initWithContentsOfFile:settingsFile];
+    tweakOn = [[dict objectForKey:@"enabled"] boolValue];
+
+    if (tweakOn) {
+        [(SpringBoard *)[UIApplication sharedApplication] setExpectsFaceContact:YES];
+    }
+    
+    [dict release];
 }
 
 
+static void _logos_method$_ungrouped$SpringBoard$setExpectsFaceContact$(SpringBoard* self, SEL _cmd, BOOL expectsFaceContact) {
+    NSDictionary *dict = [[NSDictionary alloc] initWithContentsOfFile:settingsFile];
+    tweakOn = [[dict objectForKey:@"enabled"] boolValue];
+    
+    _logos_orig$_ungrouped$SpringBoard$setExpectsFaceContact$(self, _cmd, tweakOn);
+    
+    [dict release];
+}
 
 
-static void _logos_method$_ungrouped$SpringBoard$proximityChange$(SpringBoard* self, SEL _cmd, NSNotification* notification) {
-    [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
-
+static void _logos_method$_ungrouped$SpringBoard$_proximityChanged$(SpringBoard* self, SEL _cmd, NSNotification* notification) {
+    
     
     NSDictionary *dict = [[NSDictionary alloc] initWithContentsOfFile:settingsFile];
     tweakOn = [[dict objectForKey:@"enabled"] boolValue];
     
-    
     double timeInterval = [[dict objectForKey:@"interval"] doubleValue];
     
+    BOOL cameraLock = [[dict objectForKey:@"cameraLock"] boolValue];
     
-    if (tweakOn) {
+    
+    SBApplication *runningApp = [(SpringBoard *)self _accessibilityFrontMostApplication];
 
-        
-        if ([[UIDevice currentDevice] proximityState] == YES) {
-
-            
-            [self performSelector:@selector(lockDeviceAfterDelay) withObject:nil afterDelay:timeInterval];
-        }
+    _clearIdleTimer = NO;
+    _logos_orig$_ungrouped$SpringBoard$_proximityChanged$(self, _cmd, notification);
+    _clearIdleTimer = YES;
+    
+    
+    if (([[runningApp bundleIdentifier] isEqualToString:@"com.saurik.Cydia"]) || ([[_logos_static_class_lookup$SBTelephonyManager() sharedTelephonyManager] inCall])) {
+        [dict release];
+        return;
     }
     
     
+    if (!cameraLock && [[runningApp bundleIdentifier] isEqualToString:@"com.apple.camera"]) {
+        [dict release];
+        return;
+    }
+    
+    
+    BOOL proximate = [[notification.userInfo objectForKey:@"kSBNotificationKeyState"] boolValue];
+    if (proximate && tweakOn) {
+        
+        NSLog(@"Received first proximity state");
+        
+        
+        [NSThread sleepForTimeInterval:timeInterval];
+        
+        
+        if (proximate) {
+            
+            
+            NSLog(@"Recieved second proximity state, now locking device");
+            
+            if (runningApp == nil) {
+                
+                
+                GSEventLockDevice();
+            }
+            
+            else {
+                
+                
+                [runningApp notifyResignActiveForReason:1];
+                
+                
+                GSEventLockDevice();
+            }
+            
+            
+            NSLog(@"Device locked");
+        }
+    
+        [dict release];
+    
+    }
+}
+
+
+static void _logos_method$_ungrouped$SpringBoard$clearIdleTimer(SpringBoard* self, SEL _cmd) {
+    if (_clearIdleTimer) {
+        _logos_orig$_ungrouped$SpringBoard$clearIdleTimer(self, _cmd);
+    }
     else {
-        
-        BOOL proximityOn = [[UIDevice currentDevice] isProximityMonitoringEnabled];
-        
-        if (proximityOn) {
-            [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
-        }
+        return;
     }
 }
-
-
-
-static void _logos_method$_ungrouped$SpringBoard$lockDeviceAfterDelay(SpringBoard* self, SEL _cmd) {
-    
-    
-    if ([[UIDevice currentDevice] proximityState] == YES) {
-        
-        
-        GSEventLockDevice();
-    }
-}
-
-
-
-
-
-
-
-
-
-    
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
-
-    
-    
-
-
-
-
-
-
-
-
-
-    
-    
-
-
-    
-    
-
-        
-        
-
-            
-            
-
-
-
-
-
-
-
-
-    
-    
-
-        
-        
-
-
-
-
-
-
-
-
 
 
 static __attribute__((constructor)) void _logosLocalInit() {
-{Class _logos_class$_ungrouped$SpringBoard = objc_getClass("SpringBoard"); MSHookMessageEx(_logos_class$_ungrouped$SpringBoard, @selector(applicationDidFinishLaunching:), (IMP)&_logos_method$_ungrouped$SpringBoard$applicationDidFinishLaunching$, (IMP*)&_logos_orig$_ungrouped$SpringBoard$applicationDidFinishLaunching$);{ char _typeEncoding[1024]; unsigned int i = 0; _typeEncoding[i] = 'v'; i += 1; _typeEncoding[i] = '@'; i += 1; _typeEncoding[i] = ':'; i += 1; memcpy(_typeEncoding + i, @encode(NSNotification*), strlen(@encode(NSNotification*))); i += strlen(@encode(NSNotification*)); _typeEncoding[i] = '\0'; class_addMethod(_logos_class$_ungrouped$SpringBoard, @selector(proximityChange:), (IMP)&_logos_method$_ungrouped$SpringBoard$proximityChange$, _typeEncoding); }{ char _typeEncoding[1024]; unsigned int i = 0; _typeEncoding[i] = 'v'; i += 1; _typeEncoding[i] = '@'; i += 1; _typeEncoding[i] = ':'; i += 1; _typeEncoding[i] = '\0'; class_addMethod(_logos_class$_ungrouped$SpringBoard, @selector(lockDeviceAfterDelay), (IMP)&_logos_method$_ungrouped$SpringBoard$lockDeviceAfterDelay, _typeEncoding); }} }
-#line 168 "/Users/Matt/iOS/Projects/suspendresume/suspendresume/suspendresume.xm"
+{Class _logos_class$_ungrouped$SpringBoard = objc_getClass("SpringBoard"); MSHookMessageEx(_logos_class$_ungrouped$SpringBoard, @selector(_performDeferredLaunchWork), (IMP)&_logos_method$_ungrouped$SpringBoard$_performDeferredLaunchWork, (IMP*)&_logos_orig$_ungrouped$SpringBoard$_performDeferredLaunchWork);MSHookMessageEx(_logos_class$_ungrouped$SpringBoard, @selector(setExpectsFaceContact:), (IMP)&_logos_method$_ungrouped$SpringBoard$setExpectsFaceContact$, (IMP*)&_logos_orig$_ungrouped$SpringBoard$setExpectsFaceContact$);MSHookMessageEx(_logos_class$_ungrouped$SpringBoard, @selector(_proximityChanged:), (IMP)&_logos_method$_ungrouped$SpringBoard$_proximityChanged$, (IMP*)&_logos_orig$_ungrouped$SpringBoard$_proximityChanged$);MSHookMessageEx(_logos_class$_ungrouped$SpringBoard, @selector(clearIdleTimer), (IMP)&_logos_method$_ungrouped$SpringBoard$clearIdleTimer, (IMP*)&_logos_orig$_ungrouped$SpringBoard$clearIdleTimer);} }
+#line 124 "/Users/Matt/iOS/Projects/suspendresume/suspendresume/suspendresume.xm"

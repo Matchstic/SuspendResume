@@ -1,6 +1,6 @@
 **What is this?**
 
-At it's heart, this tweak is designed to automatically lock an iPhone if it is put in a pocket without locking it first. However, it can also be used to lock the iPhone with a wave of your hand over the proximity sensor, to create a smart cover for iPhone, and many other uses.
+At it's heart, this tweak is designed to automatically lock an iPhone if it is put in a pocket without locking it first. However, it can also be used to lock the iPhone with a wave of your hand over the proximity sensor, to create a smart cover for iPhone, and many other uses. 
 
 **What hardware does it use?**
 
@@ -12,10 +12,9 @@ Anything with a proximity sensor! So, all models of the iPhone, '2G' through to 
 
 **Known Bugs**
 
-- The device doesn't lock when in an application, only in SpringBoard
 - When the tweak is turned off, proximity monitoring is still enabled
-- Occaisonally, proximity monitoring is turned off, and a respring is required to re-enable it
-- Calls are dropped/hung up in MobilePhone.app, and also in third-party apps such as CallBar, since the device is locked
+- Occaisonally, proximity monitoring is turned off after a phone call, and a respring is required to re-enable it
+- Calls are dropped/hung up in MobilePhone.app, and also in third-party apps such as CallBar, since the device is locked - only when not locked
 - After a reboot or respring, the lockscreen accepts proximity events, and locks itself, sometimes casuing a respring
 - Formatting for the PSSliderCell is a bit out
 
