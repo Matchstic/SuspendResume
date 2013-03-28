@@ -12,6 +12,7 @@
 		C945A9C316F8710E00A9A0B8 /* libsubstrate.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C945A9C216F8710E00A9A0B8 /* libsubstrate.dylib */; };
 		C945A9C516F8711400A9A0B8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C945A9C416F8711400A9A0B8 /* UIKit.framework */; };
 		C945A9C716F8755400A9A0B8 /* GraphicsServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C945A9C616F8755400A9A0B8 /* GraphicsServices.framework */; };
+		C95AF13A17049126005C3BE2 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95AF13917049126005C3BE2 /* CoreTelephony.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		C945A9C216F8710E00A9A0B8 /* libsubstrate.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsubstrate.dylib; path = ../../../../../opt/iOSOpenDev/lib/libsubstrate.dylib; sourceTree = "<group>"; };
 		C945A9C416F8711400A9A0B8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		C945A9C616F8755400A9A0B8 /* GraphicsServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GraphicsServices.framework; path = /opt/iOSOpenDev/frameworks/GraphicsServices.framework; sourceTree = "<absolute>"; };
+		C95AF13917049126005C3BE2 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,6 +39,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C95AF13A17049126005C3BE2 /* CoreTelephony.framework in Frameworks */,
 				C945A9C716F8755400A9A0B8 /* GraphicsServices.framework in Frameworks */,
 				C945A9C516F8711400A9A0B8 /* UIKit.framework in Frameworks */,
 				C945A9C316F8710E00A9A0B8 /* libsubstrate.dylib in Frameworks */,
@@ -50,6 +53,7 @@
 		C945A99916F870EA00A9A0B8 = {
 			isa = PBXGroup;
 			children = (
+				C95AF13917049126005C3BE2 /* CoreTelephony.framework */,
 				C945A9C216F8710E00A9A0B8 /* libsubstrate.dylib */,
 				C945A9A916F870EA00A9A0B8 /* suspendresume */,
 				C945A9A616F870EA00A9A0B8 /* Frameworks */,

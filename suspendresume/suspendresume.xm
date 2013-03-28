@@ -5,7 +5,6 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import <SpringBoard/SpringBoard.h>
-#import <SpringBoard/SBApplicationIcon.h>
 #import <SpringBoard/SBTelephonyManager.h>
 #import <GraphicsServices/GSEvent.h>
 #include <notify.h>
@@ -13,6 +12,7 @@
 static NSString *settingsFile = @"/var/mobile/Library/Preferences/com.matchstick.suspendresume.plist";
 static BOOL tweakOn;
 static BOOL _clearIdleTimer;
+extern NSString const *CTCallStateDisconnected;
 
 %hook SpringBoard
 
@@ -24,19 +24,22 @@ static BOOL _clearIdleTimer;
     NSDictionary *dict = [[NSDictionary alloc] initWithContentsOfFile:settingsFile];
     tweakOn = [[dict objectForKey:@"enabled"] boolValue];
 
-    if (tweakOn) {
-        [(SpringBoard *)[UIApplication sharedApplication] setExpectsFaceContact:YES];
-    }
+    [(SpringBoard *)[UIApplication sharedApplication] setExpectsFaceContact:tweakOn];
+    
+    // The observer for resetting after phone calls
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setFaceAfterTelephony:) name:@"com.apple.springboard.activeCallStateChanged" object:nil];
     
     [dict release];
 }
 
-- (void)setExpectsFaceContact:(BOOL)expectsFaceContact
-{
+- (void)setExpectsFaceContact:(BOOL)expectsFaceContact {
     NSDictionary *dict = [[NSDictionary alloc] initWithContentsOfFile:settingsFile];
     tweakOn = [[dict objectForKey:@"enabled"] boolValue];
     
     %orig(tweakOn);
+    
+    // Debug
+    NSLog(@"******** I'll be back... *********");
     
     [dict release];
 }
@@ -61,12 +64,14 @@ static BOOL _clearIdleTimer;
     
     // Don't run if in a call or in Cydia - compatible with CallBar!
     if (([[runningApp bundleIdentifier] isEqualToString:@"com.saurik.Cydia"]) || ([[%c(SBTelephonyManager) sharedTelephonyManager] inCall])) {
-        [dict release];
-        return;
+        if (tweakOn) {
+            [dict release];
+            return;
+        }
     }
     
     // Don't lock in camera unless specified to
-    if (!cameraLock && [[runningApp bundleIdentifier] isEqualToString:@"com.apple.camera"]) {
+    if ((tweakOn) && (!cameraLock) && ([[runningApp bundleIdentifier] isEqualToString:@"com.apple.camera"])) {
         [dict release];
         return;
     }
@@ -75,6 +80,7 @@ static BOOL _clearIdleTimer;
     BOOL proximate = [[notification.userInfo objectForKey:@"kSBNotificationKeyState"] boolValue];
     if (proximate && tweakOn) {
         
+        // Debug
         NSLog(@"Received first proximity state");
         
         // Wait a few milliseconds FIXME causes a lockup of interface whilst waiting
@@ -88,13 +94,14 @@ static BOOL _clearIdleTimer;
             
             if (runningApp == nil) {
                 
-                // We're in SpringBoard, no need to resign active - lock device
+                // We're in SpringBoard, no need to resign active - turn off screen, then lock device
+                // TODO Insert code here!
                 GSEventLockDevice();
             }
             
             else {
                 
-                // We're in application, resign app
+                // We're in application, resign app, then turn off screen
                 [runningApp notifyResignActiveForReason:1];
                 
                 // Lock device
@@ -104,20 +111,51 @@ static BOOL _clearIdleTimer;
             // Debug
             NSLog(@"Device locked");
         }
-    
-        [dict release];
-    
     }
+    [dict release];
 }
 
-- (void)clearIdleTimer
-{
+- (void)clearIdleTimer {
     if (_clearIdleTimer) {
         %orig;
     }
     else {
         return;
     }
+}
+
+%new
+
+// Re-enable or whatever expectsFaceContact after call disconnects
+-(void)setFaceAfterTelephony:(NSNotification*)notification {
+    
+    NSLog(@"setFaceAfterTelephony is being run!");
+    
+    // Check if tweak is on
+    NSDictionary *dict = [[NSDictionary alloc] initWithContentsOfFile:settingsFile];
+    tweakOn = [[dict objectForKey:@"enabled"] boolValue];
+    
+    if (!([[%c(SBTelephonyManager) sharedTelephonyManager] inCall])) {
+        NSLog(@"Call not connected, changing expectsFaceContact accordingly.");
+        [(SpringBoard *)[UIApplication sharedApplication] setExpectsFaceContact:tweakOn];
+    }
+}
+
+%end
+
+// Need to hook the camera when in lockscreen to ensure that it locks there too
+
+// Reset setExpectsFaceContact if it gets disabled after airplane mode
+%hook SBTelephonyManager
+
+-(void)airplaneModeChanged {
+    %orig;
+    
+    // Check if tweak is on
+    NSDictionary *dict = [[NSDictionary alloc] initWithContentsOfFile:settingsFile];
+    tweakOn = [[dict objectForKey:@"enabled"] boolValue];
+    
+    [(SpringBoard *)[UIApplication sharedApplication] setExpectsFaceContact:tweakOn];
 }
 
 %end

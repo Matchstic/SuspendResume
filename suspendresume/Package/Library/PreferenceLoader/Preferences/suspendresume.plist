@@ -4,6 +4,8 @@
 <dict>
 	<key>entry</key>
 	<dict>
+		<key>icon</key>
+		<string>suspendresumeIcon.png</string>
 		<key>cell</key>
 		<string>PSLinkCell</string>
 		<key>label</key>

@@ -12,15 +12,16 @@ Anything with a proximity sensor! So, all models of the iPhone, '2G' through to 
 
 **Known Bugs**
 
-- When the tweak is turned off, proximity monitoring is still enabled
-- Occaisonally, proximity monitoring is turned off after a phone call, and a respring is required to re-enable it
-- Calls are dropped/hung up in MobilePhone.app, and also in third-party apps such as CallBar, since the device is locked - only when not locked
-- After a reboot or respring, the lockscreen accepts proximity events, and locks itself, sometimes casuing a respring
+- When the tweak is turned off, proximity monitoring is still enabled - will fix via preference bundle
+- Proximity monitoring is turned off after a phone call, and a respring is required to re-enable it
+- Calls are dropped/hung up in MobilePhone.app, and also in third-party apps such as CallBar, only when answering from unlocked and proximity is set off
+- After a reboot or respring, the lockscreen accepts proximity events, and locks itself, casuing a respring
 - Formatting for the PSSliderCell is a bit out
 
 Email me at mclarke0805@gmail.com if you find any more
 
 **TODO**
+
 - Fix bugs!
 - Add a menu under preferences where apps can be blacklisted from being locked
 - Add global setting to choose whether or not to lock in apps; helpful for people who don't have a passcode enabled
