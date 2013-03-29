@@ -12,7 +12,7 @@ Anything with a proximity sensor! So, all models of the iPhone, '2G' through to 
 
 **Known Bugs**
 
-- Proximity monitoring is turned off after a phone call, and a respring is required to re-enable it
+- Proximity monitoring is turned off after a phone call, and a toggle on/off from preferences is required to re-enable it
 - Calls are dropped/hung up in MobilePhone.app, and also in third-party apps such as CallBar, only when answering from unlocked and proximity is set off
 - After a reboot or respring, the lockscreen accepts proximity events, and locks itself, casuing a respring
 - Formatting for the PSSliderCell is a bit out
