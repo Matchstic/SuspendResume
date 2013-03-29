@@ -14,6 +14,7 @@ static NSString *settingsFile = @"/var/mobile/Library/Preferences/com.matchstick
 static BOOL tweakOn;
 static BOOL _clearIdleTimer;
 
+// Required for the CoreTelephony notifications
 extern "C" id kCTCallStatusChangeNotification;
 extern "C" id kCTCallStatus;
 extern "C" id CTTelephonyCenterGetDefault( void );
@@ -35,15 +36,11 @@ extern "C" void CTTelephonyCenterAddObserver( id, id, CFNotificationCallback, NS
 }
 
 - (void)setExpectsFaceContact:(BOOL)expectsFaceContact {
-    NSDictionary *dict = [[NSDictionary alloc] initWithContentsOfFile:settingsFile];
-    tweakOn = [[dict objectForKey:@"enabled"] boolValue];
     
     %orig(tweakOn);
     
     // Debug
     NSLog(@"******** I'll be back... *********");
-    
-    [dict release];
 }
 
 // This is where the magic happens!
@@ -160,8 +157,9 @@ static void telephonyEventCallback(CFNotificationCenterRef center, void * observ
         int state = [[info objectForKey:kCTCallStatus] intValue];
         
         if((state == 5) && (tweakOn)) {
-            NSLog(@"CTCallStatus is 5 (call disconnected), resetting expectsFaceContact.");
+            NSLog(@"CTCallStatus is in state 5 (call disconnected), resetting expectsFaceContact.");
             [(SpringBoard *)[UIApplication sharedApplication] setExpectsFaceContact:YES];
+            NSLog(@"expectsFaceContact is reset");
         }
     }
     
@@ -174,9 +172,11 @@ static void suspendSettingsChangedNotify(CFNotificationCenterRef center, void *o
     
     if (tweakOn) {
         [(SpringBoard *)[UIApplication sharedApplication] setExpectsFaceContact:YES];
+        NSLog(@"SuspendResume is now enabled");
     }
     else {
         [(SpringBoard *)[UIApplication sharedApplication] setExpectsFaceContact:NO];
+        NSLog(@"SuspendResume is now disabled");
     }
     [dict release];
 }

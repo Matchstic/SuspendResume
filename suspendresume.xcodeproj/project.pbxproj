@@ -21,9 +21,6 @@
 		C945A9AC16F870EA00A9A0B8 /* control.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = control.txt; path = Package/DEBIAN/control.txt; sourceTree = "<group>"; };
 		C945A9AD16F870EA00A9A0B8 /* control */ = {isa = PBXFileReference; lastKnownFileType = text; name = control; path = Package/DEBIAN/control; sourceTree = "<group>"; };
 		C945A9AF16F870EA00A9A0B8 /* PackageVersion.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = PackageVersion.plist; sourceTree = "<group>"; };
-		C945A9B316F870EA00A9A0B8 /* suspendresume.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = suspendresume.plist; path = Package/Library/PreferenceLoader/Preferences/suspendresume.plist; sourceTree = "<group>"; };
-		C945A9B416F870EA00A9A0B8 /* suspendresumeIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = suspendresumeIcon.png; path = Package/Library/PreferenceLoader/Preferences/suspendresumeIcon.png; sourceTree = "<group>"; };
-		C945A9B516F870EA00A9A0B8 /* suspendresumeIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "suspendresumeIcon@2x.png"; path = "Package/Library/PreferenceLoader/Preferences/suspendresumeIcon@2x.png"; sourceTree = "<group>"; };
 		C945A9B616F870EA00A9A0B8 /* suspendresume-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "suspendresume-Prefix.pch"; sourceTree = "<group>"; };
 		C945A9B716F870EA00A9A0B8 /* suspendresume.xm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = suspendresume.xm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		C945A9B816F870EA00A9A0B8 /* suspendresume.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = suspendresume.mm; sourceTree = "<group>"; };
@@ -32,6 +29,9 @@
 		C945A9C416F8711400A9A0B8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		C945A9C616F8755400A9A0B8 /* GraphicsServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GraphicsServices.framework; path = /opt/iOSOpenDev/frameworks/GraphicsServices.framework; sourceTree = "<absolute>"; };
 		C95AF13917049126005C3BE2 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		C9BAD50B1705C7A3007089B5 /* suspendresume.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = suspendresume.plist; sourceTree = "<group>"; };
+		C9BAD50C1705C7A3007089B5 /* suspendresumeIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = suspendresumeIcon.png; sourceTree = "<group>"; };
+		C9BAD50D1705C7A3007089B5 /* suspendresumeIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "suspendresumeIcon@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,9 +137,7 @@
 		C945A9B216F870EA00A9A0B8 /* Preferences */ = {
 			isa = PBXGroup;
 			children = (
-				C945A9B316F870EA00A9A0B8 /* suspendresume.plist */,
-				C945A9B416F870EA00A9A0B8 /* suspendresumeIcon.png */,
-				C945A9B516F870EA00A9A0B8 /* suspendresumeIcon@2x.png */,
+				C9BAD50A1705C7A3007089B5 /* suspendresume */,
 			);
 			name = Preferences;
 			sourceTree = "<group>";
@@ -158,6 +156,17 @@
 				C945A9BC16F870EA00A9A0B8 /* suspendresume.plist */,
 			);
 			name = DynamicLibraries;
+			sourceTree = "<group>";
+		};
+		C9BAD50A1705C7A3007089B5 /* suspendresume */ = {
+			isa = PBXGroup;
+			children = (
+				C9BAD50B1705C7A3007089B5 /* suspendresume.plist */,
+				C9BAD50C1705C7A3007089B5 /* suspendresumeIcon.png */,
+				C9BAD50D1705C7A3007089B5 /* suspendresumeIcon@2x.png */,
+			);
+			name = suspendresume;
+			path = Package/Library/PreferenceLoader/Preferences/suspendresume;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

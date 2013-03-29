@@ -15,6 +15,7 @@ static NSString *settingsFile = @"/var/mobile/Library/Preferences/com.matchstick
 static BOOL tweakOn;
 static BOOL _clearIdleTimer;
 
+
 extern "C" id kCTCallStatusChangeNotification;
 extern "C" id kCTCallStatus;
 extern "C" id CTTelephonyCenterGetDefault( void );
@@ -25,7 +26,7 @@ extern "C" void CTTelephonyCenterAddObserver( id, id, CFNotificationCallback, NS
 @class SBTelephonyManager; @class SpringBoard; 
 static void (*_logos_orig$_ungrouped$SpringBoard$_performDeferredLaunchWork)(SpringBoard*, SEL); static void _logos_method$_ungrouped$SpringBoard$_performDeferredLaunchWork(SpringBoard*, SEL); static void (*_logos_orig$_ungrouped$SpringBoard$setExpectsFaceContact$)(SpringBoard*, SEL, BOOL); static void _logos_method$_ungrouped$SpringBoard$setExpectsFaceContact$(SpringBoard*, SEL, BOOL); static void (*_logos_orig$_ungrouped$SpringBoard$_proximityChanged$)(SpringBoard*, SEL, NSNotification*); static void _logos_method$_ungrouped$SpringBoard$_proximityChanged$(SpringBoard*, SEL, NSNotification*); static void (*_logos_orig$_ungrouped$SpringBoard$clearIdleTimer)(SpringBoard*, SEL); static void _logos_method$_ungrouped$SpringBoard$clearIdleTimer(SpringBoard*, SEL); static void (*_logos_orig$_ungrouped$SBTelephonyManager$airplaneModeChanged)(SBTelephonyManager*, SEL); static void _logos_method$_ungrouped$SBTelephonyManager$airplaneModeChanged(SBTelephonyManager*, SEL); 
 static __inline__ __attribute__((always_inline)) Class _logos_static_class_lookup$SBTelephonyManager(void) { static Class _klass; if(!_klass) { _klass = objc_getClass("SBTelephonyManager"); } return _klass; }
-#line 22 "/Users/Matt/iOS/Projects/suspendresume/suspendresume/suspendresume.xm"
+#line 23 "/Users/Matt/iOS/Projects/suspendresume/suspendresume/suspendresume.xm"
 
 
 static void _logos_method$_ungrouped$SpringBoard$_performDeferredLaunchWork(SpringBoard* self, SEL _cmd) {
@@ -42,15 +43,11 @@ static void _logos_method$_ungrouped$SpringBoard$_performDeferredLaunchWork(Spri
 }
 
 static void _logos_method$_ungrouped$SpringBoard$setExpectsFaceContact$(SpringBoard* self, SEL _cmd, BOOL expectsFaceContact) {
-    NSDictionary *dict = [[NSDictionary alloc] initWithContentsOfFile:settingsFile];
-    tweakOn = [[dict objectForKey:@"enabled"] boolValue];
     
     _logos_orig$_ungrouped$SpringBoard$setExpectsFaceContact$(self, _cmd, tweakOn);
     
     
     NSLog(@"******** I'll be back... *********");
-    
-    [dict release];
 }
 
 
@@ -167,8 +164,9 @@ static void telephonyEventCallback(CFNotificationCenterRef center, void * observ
         int state = [[info objectForKey:kCTCallStatus] intValue];
         
         if((state == 5) && (tweakOn)) {
-            NSLog(@"CTCallStatus is 5 (call disconnected), resetting expectsFaceContact.");
+            NSLog(@"CTCallStatus is in state 5 (call disconnected), resetting expectsFaceContact.");
             [(SpringBoard *)[UIApplication sharedApplication] setExpectsFaceContact:YES];
+            NSLog(@"expectsFaceContact is reset");
         }
     }
     
@@ -181,9 +179,11 @@ static void suspendSettingsChangedNotify(CFNotificationCenterRef center, void *o
     
     if (tweakOn) {
         [(SpringBoard *)[UIApplication sharedApplication] setExpectsFaceContact:YES];
+        NSLog(@"SuspendResume is now enabled");
     }
     else {
         [(SpringBoard *)[UIApplication sharedApplication] setExpectsFaceContact:NO];
+        NSLog(@"SuspendResume is now disabled");
     }
     [dict release];
 }
