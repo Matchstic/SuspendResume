@@ -1,7 +1,7 @@
 Package: com.matchstick.suspendresume
 Name: SuspendResume
-Version: 0.4.0-1
-Description: 
+Version: 0.4.1-1
+Description: A tweak originally designed to lock your iPhone once it's put into your pocket. However, you can also use it to lock the iPhone with a hand gesture, create a smart cover for the iPhone and much more!
 Section: System
 Depends: firmware (>= 5.0), mobilesubstrate
 Conflicts: 

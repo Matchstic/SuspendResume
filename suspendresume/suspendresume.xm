@@ -7,12 +7,17 @@
 #import <SpringBoard/SpringBoard.h>
 #import <SpringBoard/SBTelephonyManager.h>
 #import <GraphicsServices/GSEvent.h>
+#import <CoreTelephony/CTCall.h>
 #include <notify.h>
 
 static NSString *settingsFile = @"/var/mobile/Library/Preferences/com.matchstick.suspendresume.plist";
 static BOOL tweakOn;
 static BOOL _clearIdleTimer;
-extern NSString const *CTCallStateDisconnected;
+
+extern "C" id kCTCallStatusChangeNotification;
+extern "C" id kCTCallStatus;
+extern "C" id CTTelephonyCenterGetDefault( void );
+extern "C" void CTTelephonyCenterAddObserver( id, id, CFNotificationCallback, NSString *, void *, int );
 
 %hook SpringBoard
 
@@ -25,9 +30,6 @@ extern NSString const *CTCallStateDisconnected;
     tweakOn = [[dict objectForKey:@"enabled"] boolValue];
 
     [(SpringBoard *)[UIApplication sharedApplication] setExpectsFaceContact:tweakOn];
-    
-    // The observer for resetting after phone calls
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setFaceAfterTelephony:) name:@"com.apple.springboard.activeCallStateChanged" object:nil];
     
     [dict release];
 }
@@ -95,7 +97,7 @@ extern NSString const *CTCallStateDisconnected;
             if (runningApp == nil) {
                 
                 // We're in SpringBoard, no need to resign active - turn off screen, then lock device
-                // TODO Insert code here!
+                // TODO Insert dimming code here!
                 GSEventLockDevice();
             }
             
@@ -124,22 +126,7 @@ extern NSString const *CTCallStateDisconnected;
     }
 }
 
-%new
-
-// Re-enable or whatever expectsFaceContact after call disconnects
--(void)setFaceAfterTelephony:(NSNotification*)notification {
-    
-    NSLog(@"setFaceAfterTelephony is being run!");
-    
-    // Check if tweak is on
-    NSDictionary *dict = [[NSDictionary alloc] initWithContentsOfFile:settingsFile];
-    tweakOn = [[dict objectForKey:@"enabled"] boolValue];
-    
-    if (!([[%c(SBTelephonyManager) sharedTelephonyManager] inCall])) {
-        NSLog(@"Call not connected, changing expectsFaceContact accordingly.");
-        [(SpringBoard *)[UIApplication sharedApplication] setExpectsFaceContact:tweakOn];
-    }
-}
+//%new
 
 %end
 
@@ -159,3 +146,45 @@ extern NSString const *CTCallStateDisconnected;
 }
 
 %end
+
+// Reset expectsFaceContact if needed
+static void telephonyEventCallback(CFNotificationCenterRef center, void * observer, CFStringRef name, const void * object,
+ CFDictionaryRef userInfo) {
+    if([(NSString *)name isEqualToString:kCTCallStatusChangeNotification]) {
+        NSDictionary *info = (NSDictionary *)userInfo;
+        
+        if(!info) {
+            return;
+        }
+        
+        int state = [[info objectForKey:kCTCallStatus] intValue];
+        
+        if((state == 5) && (tweakOn)) {
+            NSLog(@"CTCallStatus is 5 (call disconnected), resetting expectsFaceContact.");
+            [(SpringBoard *)[UIApplication sharedApplication] setExpectsFaceContact:YES];
+        }
+    }
+    
+}
+
+static void suspendSettingsChangedNotify(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo) {
+    // Check if tweak is on
+    NSDictionary *dict = [[NSDictionary alloc] initWithContentsOfFile:settingsFile];
+    tweakOn = [[dict objectForKey:@"enabled"] boolValue];
+    
+    if (tweakOn) {
+        [(SpringBoard *)[UIApplication sharedApplication] setExpectsFaceContact:YES];
+    }
+    else {
+        [(SpringBoard *)[UIApplication sharedApplication] setExpectsFaceContact:NO];
+    }
+    [dict release];
+}
+
+%ctor {
+    
+    %init;
+    
+    CTTelephonyCenterAddObserver(CTTelephonyCenterGetDefault(), NULL, telephonyEventCallback, NULL, NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
+    CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, &suspendSettingsChangedNotify, CFSTR("com.matchstick.suspendresume.changed"), NULL, 0);
+}
