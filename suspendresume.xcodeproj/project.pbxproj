@@ -22,7 +22,7 @@
 		C945A9AD16F870EA00A9A0B8 /* control */ = {isa = PBXFileReference; lastKnownFileType = text; name = control; path = Package/DEBIAN/control; sourceTree = "<group>"; };
 		C945A9AF16F870EA00A9A0B8 /* PackageVersion.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = PackageVersion.plist; sourceTree = "<group>"; };
 		C945A9B616F870EA00A9A0B8 /* suspendresume-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "suspendresume-Prefix.pch"; sourceTree = "<group>"; };
-		C945A9B716F870EA00A9A0B8 /* suspendresume.xm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = suspendresume.xm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		C945A9B716F870EA00A9A0B8 /* suspendresume.xm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = suspendresume.xm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		C945A9B816F870EA00A9A0B8 /* suspendresume.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = suspendresume.mm; sourceTree = "<group>"; };
 		C945A9BC16F870EA00A9A0B8 /* suspendresume.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = suspendresume.plist; path = Package/Library/MobileSubstrate/DynamicLibraries/suspendresume.plist; sourceTree = "<group>"; };
 		C945A9C216F8710E00A9A0B8 /* libsubstrate.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsubstrate.dylib; path = ../../../../../opt/iOSOpenDev/lib/libsubstrate.dylib; sourceTree = "<group>"; };
@@ -346,7 +346,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				iOSOpenDevBuildPackageOnAnyBuild = NO;
 				iOSOpenDevCopyOnBuild = NO;
-				iOSOpenDevDevice = 192.168.2.17;
+				iOSOpenDevDevice = "";
 				iOSOpenDevInstallOnAnyBuild = NO;
 				iOSOpenDevInstallOnProfiling = YES;
 				iOSOpenDevRespringOnInstall = YES;
@@ -375,7 +375,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				iOSOpenDevBuildPackageOnAnyBuild = NO;
 				iOSOpenDevCopyOnBuild = NO;
-				iOSOpenDevDevice = 192.168.2.17;
+				iOSOpenDevDevice = "";
 				iOSOpenDevInstallOnAnyBuild = NO;
 				iOSOpenDevInstallOnProfiling = YES;
 				iOSOpenDevRespringOnInstall = YES;

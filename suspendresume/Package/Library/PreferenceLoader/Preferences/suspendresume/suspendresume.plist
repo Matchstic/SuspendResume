@@ -4,20 +4,20 @@
 <dict>
 	<key>entry</key>
 	<dict>
-		<key>icon</key>
-		<string>suspendresumeIcon.png</string>
 		<key>cell</key>
 		<string>PSLinkCell</string>
+		<key>icon</key>
+		<string>suspendresumeIcon.png</string>
 		<key>label</key>
 		<string>SuspendResume</string>
 	</dict>
 	<key>items</key>
 	<array>
 		<dict>
-			<key>alternateColors</key>
-			<true/>
 			<key>PostNotification</key>
 			<string>com.matchstick.suspendresume.changed</string>
+			<key>alternateColors</key>
+			<true/>
 			<key>cell</key>
 			<string>PSSwitchCell</string>
 			<key>default</key>
@@ -30,46 +30,121 @@
 			<string>Enabled</string>
 		</dict>
 		<dict>
-			<key>label</key>
-			<string>Lock in Camera.app</string>
-			<key>key</key>
-			<string>cameraLock</string>
-			<key>defaults</key>
-			<string>com.matchstick.suspendresume</string>
-			<key>default</key>
-			<true/>
-			<key>cell</key>
-			<string>PSSwitchCell</string>
-		</dict>
-		<dict>
-			<key>footerText</key>
-			<string>Adjust the time interval to change how sensitive the tweak is. </string>
 			<key>cell</key>
 			<string>PSGroupCell</string>
+			<key>footerText</key>
+			<string>Adjust the time interval to change how sensitive the tweak is. </string>
 			<key>label</key>
 			<string>Time Interval</string>
 		</dict>
 		<dict>
-			<key>rightImage</key>
-			<string>MoreTime.png</string>
-			<key>leftImage</key>
-			<string>LessTime.png</string>
-			<key>label</key>
-			<string>Time Interval</string>
+			<key>cell</key>
+			<string>PSSliderCell</string>
+			<key>default</key>
+			<real>0.5</real>
+			<key>defaults</key>
+			<string>com.matchstick.suspendresume</string>
 			<key>key</key>
 			<string>interval</string>
-			<key>showValue</key>
-			<false/>
+			<key>label</key>
+			<string>Time Interval</string>
+			<key>leftImage</key>
+			<string>LessTime.png</string>
 			<key>max</key>
 			<real>2</real>
 			<key>min</key>
 			<real>0.1</real>
+			<key>rightImage</key>
+			<string>MoreTime.png</string>
+			<key>showValue</key>
+			<false/>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>footerText</key>
+			<string>App blacklisting is not yet functional. </string>
+			<key>label</key>
+			<string>Applications</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<true/>
 			<key>defaults</key>
 			<string>com.matchstick.suspendresume</string>
-			<key>default</key>
-			<real>0.5</real>
+			<key>key</key>
+			<string>cameraLock</string>
+			<key>label</key>
+			<string>Lock in Camera.app</string>
+		</dict>
+		<dict>
+			<key>ALAllowsSelection</key>
+			<string>1</string>
+			<key>ALChangeNotification</key>
+			<string>com.matchstick.suspendresume.applaunch</string>
+			<key>ALSectionDescriptors</key>
+			<array>
+				<dict>
+					<key>cell-class-name</key>
+					<string>ALSwitchCell</string>
+					<key>icon-size</key>
+					<string>29</string>
+					<key>predicate</key>
+					<string>(isSystemApplication = TRUE) AND NOT (tags contains &apos;no-suspendresume&apos;)</string>
+					<key>suppress-hidden-apps</key>
+					<string>1</string>
+					<key>title</key>
+					<string>System Applications</string>
+				</dict>
+				<dict>
+					<key>cell-class-name</key>
+					<string>ALSwitchCell</string>
+					<key>icon-size</key>
+					<string>29</string>
+					<key>predicate</key>
+					<string>(isSystemApplication = FALSE) AND NOT (tags contains &apos;no-suspendresume&apos;)</string>
+					<key>suppress-hidden-apps</key>
+					<string>1</string>
+					<key>title</key>
+					<string>User Applications</string>
+				</dict>
+			</array>
+			<key>ALSettingsKeyPrefix</key>
+			<string>Blacklist-</string>
+			<key>ALSettingsPath</key>
+			<string>/var/mobile/Library/Preferences/com.matchstick.suspendresume.plist</string>
+			<key>bundle</key>
+			<string>AppList</string>
 			<key>cell</key>
-			<string>PSSliderCell</string>
+			<string>PSLinkCell</string>
+			<key>isController</key>
+			<true/>
+			<key>label</key>
+			<string>Blacklist apps</string>
+		</dict>
+		<dict>
+			<key>alignment</key>
+			<integer>1</integer>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>footerText</key>
+			<string>Enabling &quot;Don&apos;t lock device&quot; prevents the device from locking, and just turns off the display.</string>
+			<key>label</key>
+			<string>I don&apos;t recommend enabling &quot;Don&apos;t lock device&quot; if you have a passcode set, it is a huge security risk.</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<string>NO</string>
+			<key>defaults</key>
+			<string>com.matchstick.suspendresume</string>
+			<key>key</key>
+			<string>onlySuspend</string>
+			<key>label</key>
+			<string>Don&apos;t lock device</string>
 		</dict>
 		<dict>
 			<key>cell</key>

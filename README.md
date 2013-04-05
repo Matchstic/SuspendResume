@@ -12,8 +12,11 @@ Anything with a proximity sensor! So, all models of the iPhone, '2G' through to 
 
 **Known Bugs**
 
+- The UI freezes when getting second proximity value, need to do this on a separate thread
+- The second proximity value always evaluates to yes - need a way of getting second proximity value, UIDevice's proximityState always returns NO?
 - Proximity monitoring is turned off after a phone call, and a toggle on/off from preferences is required to re-enable it
 - After a reboot or respring, the lockscreen accepts proximity events, and locks itself, casuing a respring - could be unrelated to tweak, need testers to confirm
+- App blacklisting is not fully functional
 
 Email me at mclarke0805@gmail.com if you find any more
 
@@ -21,7 +24,6 @@ Email me at mclarke0805@gmail.com if you find any more
 
 - Fix bugs!
 - Add a menu under preferences where apps can be blacklisted from being locked
-- Add global setting to choose whether or not to lock in apps; helpful for people who don't have a passcode enabled
 - Other cool stuff!
 
 Hint: When using this to lock your iPhone with a hand gesture, don't forget to feel like a Jedi ;)
