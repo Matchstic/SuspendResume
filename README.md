@@ -12,6 +12,7 @@ Anything with a proximity sensor! So, all models of the iPhone, '2G' through to 
 
 **Known Bugs**
 
+- There is no locking in the camera if it is launched from the lockscreen
 - The UI freezes when getting second proximity value, need to do this on a separate thread
 - The second proximity value always evaluates to yes - need a way of getting second proximity value, UIDevice's proximityState always returns NO?
 - Proximity monitoring is turned off after a phone call, and a toggle on/off from preferences is required to re-enable it
