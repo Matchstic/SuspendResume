@@ -5,6 +5,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import <SpringBoard/SpringBoard.h>
+#import <SpringBoard/SBApplication.h>
 #import <SpringBoard/SBTelephonyManager.h>
 #import <GraphicsServices/GSEvent.h>
 #import <CoreTelephony/CTCall.h>
@@ -13,6 +14,7 @@
 static NSString *settingsFile = @"/var/mobile/Library/Preferences/com.matchstick.suspendresume.plist";
 static BOOL tweakOn;
 static BOOL _clearIdleTimer;
+static BOOL isBlacklisted;
 
 // Required for the CoreTelephony notifications
 extern "C" id kCTCallStatusChangeNotification;
@@ -20,7 +22,11 @@ extern "C" id kCTCallStatus;
 extern "C" id CTTelephonyCenterGetDefault( void );
 extern "C" void CTTelephonyCenterAddObserver( id, id, CFNotificationCallback, NSString *, void *, int );
 
+// ********** Start main functions/hooks ************
+
 %hook SpringBoard
+
+// ********** Ensure proximity is on when booted ***********
 
 -(void)_performDeferredLaunchWork {
     // Allow SpringBoard to initialise
@@ -34,16 +40,20 @@ extern "C" void CTTelephonyCenterAddObserver( id, id, CFNotificationCallback, NS
     
     [dict release];
 }
+// *********** Finished boot hooks ********
 
-- (void)setExpectsFaceContact:(BOOL)expectsFaceContact {
+// *********** Do some funky stuff *********
+-(void)setExpectsFaceContact:(BOOL)expectsFaceContact {
     
-    %orig(tweakOn);
+    %orig;
     
     // Debug
     NSLog(@"SuspendResume: I'll be back...");
 }
+// *********** End funky stuff **********
 
-// This is where the magic happens!
+// *********** This is where the magic happens! ************
+
 -(void)_proximityChanged:(NSNotification*)notification {
     
     // Check if tweak is on
@@ -63,12 +73,10 @@ extern "C" void CTTelephonyCenterAddObserver( id, id, CFNotificationCallback, NS
     _clearIdleTimer = YES;
     
     // Don't run in a blacklisted app - prevents the locking of the app, probably.
-    //NSString *openApp = [runningApp displayIdentifier];
-    //BOOL blacklist = [[dict objectForKey:[@"Blacklist-" stringByAppendingString:openApp]] boolValue];
-    //if (blacklist) {
-    //    [dict release];
-    //    return;
-    //}
+    if (isBlacklisted) {
+        [dict release];
+        return;
+    }
     
     // Don't run if in a call or in Cydia - compatible with CallBar!
     if (([[runningApp bundleIdentifier] isEqualToString:@"com.saurik.Cydia"]) || ([[%c(SBTelephonyManager) sharedTelephonyManager] inCall])) {
@@ -89,11 +97,12 @@ extern "C" void CTTelephonyCenterAddObserver( id, id, CFNotificationCallback, NS
     if (proximate && tweakOn) {
         // Debug
         NSLog(@"SuspendResume: Received first proximity state");
-        // Wait a few milliseconds FIXME causes a lockup of interface whilst waiting
+        // Wait a few milliseconds, and run second proximity method FIXME locks up main thread
         [self performSelector:@selector(secondProximityState) withObject:nil afterDelay:timeInterval];
     }
     [dict release];
 }
+// ********* End the proximity changed method ************
 
 - (void)clearIdleTimer {
     if (_clearIdleTimer) {
@@ -104,6 +113,7 @@ extern "C" void CTTelephonyCenterAddObserver( id, id, CFNotificationCallback, NS
     }
 }
 
+// ********* Run to get second proximity state ************
 %new
 -(void)secondProximityState {
     
@@ -112,7 +122,7 @@ extern "C" void CTTelephonyCenterAddObserver( id, id, CFNotificationCallback, NS
     //[UIDevice currentDevice].proximityMonitoringEnabled = YES; -- until a fix is built
     //BOOL proximate = [[UIDevice currentDevice] proximityState];
     BOOL proximate = YES;
-    NSLog(@"SuspendResume: proximity state = %d", proximate);
+    NSLog(@"SuspendResume: Proximity state = %d", proximate);
     
     SBApplication *runningApp = [(SpringBoard *)self _accessibilityFrontMostApplication];
     
@@ -142,7 +152,9 @@ extern "C" void CTTelephonyCenterAddObserver( id, id, CFNotificationCallback, NS
     }
     [dict release];
 }
+// ********* End second proximity state **********
 
+// ********* Device locking code **********
 %new
 -(void)lockTheDevice {
     SBUIController *controller = (SBUIController *)[%c(SBUIController) sharedInstance];
@@ -150,16 +162,19 @@ extern "C" void CTTelephonyCenterAddObserver( id, id, CFNotificationCallback, NS
         [controller lock];
     if ([controller respondsToSelector:@selector(lockFromSource:)])
         [controller lockFromSource:0];
-    //[controller wakeUp:nil];
 }
+
+// ********* End locking code **************
 
 %end
 
+// ********* End main functions ************
+
 // Need to hook the camera when in lockscreen to ensure that it locks there too
 
-// Reset setExpectsFaceContact if it gets disabled after airplane mode
-%hook SBTelephonyManager
+// ************** Reset proximity after airplane mode changed ************
 
+%hook SBTelephonyManager
 -(void)airplaneModeChanged {
     %orig;
     
@@ -170,54 +185,39 @@ extern "C" void CTTelephonyCenterAddObserver( id, id, CFNotificationCallback, NS
     [(SpringBoard *)[UIApplication sharedApplication] setExpectsFaceContact:tweakOn];
     [dict release];
 }
-
 %end
 
-// For app blacklisting
-%hook SBApplicationIcon
--(void)launch {
+// ************** End airplane mode hooking ***********
+
+// ************** App blacklisting hooks *****************
+
+%hook SBApplication
+-(void)didActivate {
     %orig;
     // Check if tweak is on
     NSDictionary *dict = [[NSDictionary alloc] initWithContentsOfFile:settingsFile];
     tweakOn = [[dict objectForKey:@"enabled"] boolValue];
     if (tweakOn) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"com.matchstick.suspendresume.applaunched" object:nil];
-        NSLog(@"SuspendResume: App launched notification has been sent");
+        CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), CFSTR("com.matchstick.suspendresume.applaunched"), NULL, NULL, TRUE);
     }
     [dict release];
 }
+
 // Ensure expectsFaceContact is reset after a blacklisted app is quit
-//-(void)exitedCommon {
-//    %orig;
-//    if (tweakOn && !([[%c(SBTelephonyManager) sharedTelephonyManager] inCall])) {
-//        NSLog(@"SuspendResume: App closed, re-enabling expectsFaceContact");
-//        [(SpringBoard *)[UIApplication sharedApplication] setExpectsFaceContact:YES];
-//    }
-//}
+-(void)didSuspend {
+    if (tweakOn && !([[%c(SBTelephonyManager) sharedTelephonyManager] inCall])) {
+        [(SpringBoard *)[UIApplication sharedApplication] setExpectsFaceContact:YES];
+        //BOOL isBlacklisted = NO;
+        //NSLog(@"SuspendResume: isBlacklisted state = %d", isBlacklisted);
+    }
+    %orig;
+}
 %end
 
-//@interface TheListener : NSObject
-//@end
-//@implementation TheListener
+// ************** End app blacklisting hooks **************
 
-//-(id)init {
-//    self = [super init];
-//    NSLog(@"SuspendResume: TheListener has begun init!");
-//    if (self) {
-        
-//        NSLog(@"SuspendResume: TheListener has set up observers!");
-//    }
-//    return self;
-//}
+// ***************** Resetting proximity monitoring after a phone call ***************
 
-
-//-(void)dealloc {
-//    [[NSNotificationCenter defaultCenter] removeObserver:self];
-//    [super dealloc];
-//}
-//@end
-
-// Reset expectsFaceContact after phone call
 static void telephonyEventCallback(CFNotificationCenterRef center, void * observer, CFStringRef name, const void * object, CFDictionaryRef userInfo) {
     if([(NSString *)name isEqualToString:kCTCallStatusChangeNotification]) {
         NSDictionary *info = (NSDictionary *)userInfo;
@@ -236,23 +236,32 @@ static void telephonyEventCallback(CFNotificationCenterRef center, void * observ
     }
 }
 
-// For app blacklisting
-//-(void)appHasLaunched:(NSNotification *)notification {
+// ************** End resetting after telephony ******************
+
+// ************** More app blacklisting code - runs when app is launched ************
+
 static void appHasLaunched(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo) {
-    NSLog(@"SuspendResume: recieved app launched notification");
     // Get the topmost application
     SBApplication *runningApp = [(SpringBoard *)[UIApplication sharedApplication] _accessibilityFrontMostApplication];
     // Don't run in a blacklisted app
     NSDictionary *dict = [[NSDictionary alloc] initWithContentsOfFile:settingsFile];
-    BOOL blacklist = [[dict objectForKey:[@"Blacklist-" stringByAppendingString:[runningApp displayIdentifier]]] boolValue];
+    NSString *displayId = [runningApp displayIdentifier];
+    if ([displayId length] == 0) {
+        return;
+    }
+    BOOL blacklist = [[dict objectForKey:[@"Blacklist-" stringByAppendingString:displayId]] boolValue];
     if (blacklist) {
         [(SpringBoard *)[UIApplication sharedApplication] setExpectsFaceContact:NO];
-        NSLog(@"SuspendResume: app is blacklisted, temporarily disabled.");
+        //BOOL isBlacklisted = YES;
+        NSLog(@"SuspendResume: App is blacklisted, temporarily disabled.");
     }
     [dict release];
 }
 
-// settings changed method
+// ************* End blacklisting code **************
+
+// ************* Handle change of settings **************
+
 static void suspendSettingsChangedNotify(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo) {
     // Check if tweak is on
     NSDictionary *dict = [[NSDictionary alloc] initWithContentsOfFile:settingsFile];
@@ -269,13 +278,14 @@ static void suspendSettingsChangedNotify(CFNotificationCenterRef center, void *o
     [dict release];
 }
 
+// ************* End settings handling ************
+
 %ctor {
     @autoreleasepool {
     %init;
     
     CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, &suspendSettingsChangedNotify, CFSTR("com.matchstick.suspendresume.changed"), NULL, 0);
     CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, &appHasLaunched, CFSTR("com.matchstick.suspendresume.applaunched"), NULL, 0);
-    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appHasLaunched:) name:suspendresumeAppLaunched object:nil];
     CTTelephonyCenterAddObserver(CTTelephonyCenterGetDefault(), NULL, telephonyEventCallback, NULL, NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
     }
 }
