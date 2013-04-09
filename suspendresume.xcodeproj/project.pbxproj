@@ -32,6 +32,7 @@
 		C9BAD50B1705C7A3007089B5 /* suspendresume.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = suspendresume.plist; sourceTree = "<group>"; };
 		C9BAD50C1705C7A3007089B5 /* suspendresumeIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = suspendresumeIcon.png; sourceTree = "<group>"; };
 		C9BAD50D1705C7A3007089B5 /* suspendresumeIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "suspendresumeIcon@2x.png"; sourceTree = "<group>"; };
+		C9D034A51714924B00B8C701 /* Support.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Support.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -161,6 +162,7 @@
 		C9BAD50A1705C7A3007089B5 /* suspendresume */ = {
 			isa = PBXGroup;
 			children = (
+				C9D034A51714924B00B8C701 /* Support.plist */,
 				C9BAD50B1705C7A3007089B5 /* suspendresume.plist */,
 				C9BAD50C1705C7A3007089B5 /* suspendresumeIcon.png */,
 				C9BAD50D1705C7A3007089B5 /* suspendresumeIcon@2x.png */,

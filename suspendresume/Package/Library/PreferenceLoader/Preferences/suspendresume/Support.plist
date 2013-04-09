@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>title</key>
+	<string>Support</string>
+	<key>items</key>
+	<array>
+		<dict>
+			<key>footerText</key>
+			<string>Does what it says on the tin!</string>
+			<key>label</key>
+			<string>Enabled</string>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+		</dict>
+		<dict>
+			<key>footerText</key>
+			<string>This controls the tweak&apos;s sensitivity. A lower value on the slider allows for locking the iPhone with a hand gesture, whereas a higher value only allows for locking automatically in your pocket. Feel free to adjust this until you are satisfied with the sensitivity. </string>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>Time Interval</string>
+		</dict>
+		<dict>
+			<key>footerText</key>
+			<string>This controls the locking of the camera app from the lockscreen, and from the main application. This is done independently of what has been set in &quot;Blacklist apps&quot;</string>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>Lock in Camera.app</string>
+		</dict>
+		<dict>
+			<key>footerText</key>
+			<string>Here you can control which apps SuspendResume will be active in. Got an app that uses the proximity sensor, but SuspendResume causes problems with it? Just disable it from here!</string>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>Blacklist apps</string>
+		</dict>
+		<dict>
+			<key>footerText</key>
+			<string>This setting allows you to simply &quot;suspend&quot; your iPhone instead of fully locking it. This way, you won&apos;t have to go through the lockscreen to continue what you were doing, instead, just pull out your phone and carry on. However, your iPhone will still lock after the time set for auto-locking, so it is only good for a short period of time. Also, if you have a passcode set, this is a large security risk, as it allows people to easily bypass the lockscreen.</string>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>Don&apos;t lock device</string>
+		</dict>
+	</array>
+</dict>
+</plist>

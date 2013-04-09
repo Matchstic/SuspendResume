@@ -134,6 +134,7 @@ static void _logos_method$_ungrouped$SpringBoard$secondProximityState(SpringBoar
     SBApplication *runningApp = [(SpringBoard *)self _accessibilityFrontMostApplication];
     
     
+    
     if (proximate) {
         
         NSLog(@"SuspendResume: Recieved second proximity state, now locking/suspending device");
@@ -287,7 +288,7 @@ static void suspendSettingsChangedNotify(CFNotificationCenterRef center, void *o
 
 
 
-static __attribute__((constructor)) void _logosLocalCtor_4f142242() {
+static __attribute__((constructor)) void _logosLocalCtor_3956762d() {
     @autoreleasepool {
     {Class _logos_class$_ungrouped$SpringBoard = objc_getClass("SpringBoard"); MSHookMessageEx(_logos_class$_ungrouped$SpringBoard, @selector(_performDeferredLaunchWork), (IMP)&_logos_method$_ungrouped$SpringBoard$_performDeferredLaunchWork, (IMP*)&_logos_orig$_ungrouped$SpringBoard$_performDeferredLaunchWork);MSHookMessageEx(_logos_class$_ungrouped$SpringBoard, @selector(setExpectsFaceContact:), (IMP)&_logos_method$_ungrouped$SpringBoard$setExpectsFaceContact$, (IMP*)&_logos_orig$_ungrouped$SpringBoard$setExpectsFaceContact$);MSHookMessageEx(_logos_class$_ungrouped$SpringBoard, @selector(_proximityChanged:), (IMP)&_logos_method$_ungrouped$SpringBoard$_proximityChanged$, (IMP*)&_logos_orig$_ungrouped$SpringBoard$_proximityChanged$);MSHookMessageEx(_logos_class$_ungrouped$SpringBoard, @selector(clearIdleTimer), (IMP)&_logos_method$_ungrouped$SpringBoard$clearIdleTimer, (IMP*)&_logos_orig$_ungrouped$SpringBoard$clearIdleTimer);{ char _typeEncoding[1024]; unsigned int i = 0; _typeEncoding[i] = 'v'; i += 1; _typeEncoding[i] = '@'; i += 1; _typeEncoding[i] = ':'; i += 1; _typeEncoding[i] = '\0'; class_addMethod(_logos_class$_ungrouped$SpringBoard, @selector(secondProximityState), (IMP)&_logos_method$_ungrouped$SpringBoard$secondProximityState, _typeEncoding); }{ char _typeEncoding[1024]; unsigned int i = 0; _typeEncoding[i] = 'v'; i += 1; _typeEncoding[i] = '@'; i += 1; _typeEncoding[i] = ':'; i += 1; _typeEncoding[i] = '\0'; class_addMethod(_logos_class$_ungrouped$SpringBoard, @selector(lockTheDevice), (IMP)&_logos_method$_ungrouped$SpringBoard$lockTheDevice, _typeEncoding); }Class _logos_class$_ungrouped$SBTelephonyManager = objc_getClass("SBTelephonyManager"); MSHookMessageEx(_logos_class$_ungrouped$SBTelephonyManager, @selector(airplaneModeChanged), (IMP)&_logos_method$_ungrouped$SBTelephonyManager$airplaneModeChanged, (IMP*)&_logos_orig$_ungrouped$SBTelephonyManager$airplaneModeChanged);Class _logos_class$_ungrouped$SBApplication = objc_getClass("SBApplication"); MSHookMessageEx(_logos_class$_ungrouped$SBApplication, @selector(didActivate), (IMP)&_logos_method$_ungrouped$SBApplication$didActivate, (IMP*)&_logos_orig$_ungrouped$SBApplication$didActivate);MSHookMessageEx(_logos_class$_ungrouped$SBApplication, @selector(didSuspend), (IMP)&_logos_method$_ungrouped$SBApplication$didSuspend, (IMP*)&_logos_orig$_ungrouped$SBApplication$didSuspend);}
     

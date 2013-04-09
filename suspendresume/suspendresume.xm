@@ -138,7 +138,7 @@ extern "C" void CTTelephonyCenterAddObserver( id, id, CFNotificationCallback, NS
         }
         else {
             if (runningApp == nil) {
-                // We're in SpringBoard, no need to resign active - turn off screen, then lock device
+                // We're in SpringBoard, no need to resign active - lock device
                 [self performSelector:@selector(lockTheDevice)];
             }
             else {
@@ -207,7 +207,7 @@ extern "C" void CTTelephonyCenterAddObserver( id, id, CFNotificationCallback, NS
 -(void)didSuspend {
     if (tweakOn && !([[%c(SBTelephonyManager) sharedTelephonyManager] inCall])) {
         [(SpringBoard *)[UIApplication sharedApplication] setExpectsFaceContact:YES];
-        //BOOL isBlacklisted = NO;
+        //isBlacklisted = NO;
         //NSLog(@"SuspendResume: isBlacklisted state = %d", isBlacklisted);
     }
     %orig;
@@ -252,7 +252,7 @@ static void appHasLaunched(CFNotificationCenterRef center, void *observer, CFStr
     BOOL blacklist = [[dict objectForKey:[@"Blacklist-" stringByAppendingString:displayId]] boolValue];
     if (blacklist) {
         [(SpringBoard *)[UIApplication sharedApplication] setExpectsFaceContact:NO];
-        //BOOL isBlacklisted = YES;
+        //isBlacklisted = YES;
         NSLog(@"SuspendResume: App is blacklisted, temporarily disabled.");
     }
     [dict release];

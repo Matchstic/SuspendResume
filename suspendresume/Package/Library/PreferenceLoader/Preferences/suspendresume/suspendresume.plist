@@ -63,7 +63,7 @@
 			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>footerText</key>
-			<string>App blacklisting is not yet functional. </string>
+			<string>Blacklist an app to prevent locking in it.</string>
 			<key>label</key>
 			<string>Applications</string>
 		</dict>
@@ -151,6 +151,26 @@
 			<string>PSGroupCell</string>
 			<key>footerText</key>
 			<string>This tweak was originally made to simply lock your device when you put it in your pocket. But, you can also use it to emulate a smart cover for the iPhone, lock your device with a wave of your hand, and much more! Fancy, eh?</string>
+		</dict>
+		<dict>
+			<key>footerText</key>
+			<string>© Matt Clarke (matchstick) 2013</string>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+		</dict>
+		<dict>
+			<key>label</key>
+			<string>Support</string>
+			<key>cell</key>
+			<string>PSLinkCell</string>
+		</dict>
+		<dict>
+			<key>action</key>
+			<string>suspendResumeOpenMail</string>
+			<key>label</key>
+			<string>Found a bug?</string>
+			<key>cell</key>
+			<string>PSButtonCell</string>
 		</dict>
 	</array>
 	<key>title</key>
