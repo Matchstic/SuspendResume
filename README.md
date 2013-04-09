@@ -17,6 +17,7 @@ Anything with a proximity sensor! So, all models of the iPhone, '2G' through to 
 - The second proximity value always evaluates to yes - need a way of getting second proximity value, UIDevice's proximityState always returns NO?
 - Proximity monitoring is turned off after a phone call, and a toggle on/off from preferences is required to re-enable it, but only when using Callbar or other such tweaks.
 - After a reboot or respring, the lockscreen accepts proximity events, and locks itself, casuing a respring - could be unrelated to tweak, need testers to confirm
+- Proximity sensor is disabled in landscape - appears to be an iOS bug
 
 Email me at mclarke0805@gmail.com if you find any more
 
