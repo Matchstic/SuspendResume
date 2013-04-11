@@ -1,3 +1,5 @@
+**Please note that I will no longer be uploading more source until I can find a relevant license that will allow me to share the source for educational purposes only, without allowing redistributing. So, there are a few bugs still in this code! I will though continue to upload the previous release in the Downloads section.**
+
 **What is this?**
 
 At it's heart, this tweak is designed to automatically lock an iPhone if it is put in a pocket without locking it first. However, it can also be used to lock the iPhone with a wave of your hand over the proximity sensor, to create a smart cover for iPhone, and many other uses. 
