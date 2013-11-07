@@ -1,4 +1,4 @@
-**Please note that I will no longer be uploading more source until I can find a relevant license that will allow me to share the source for educational purposes only, without allowing redistributing. So, there are a few bugs still in this code! I will though continue to upload the previous release in the Downloads section.**
+This code is terrible!
 
 **What is this?**
 
